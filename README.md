@@ -12,6 +12,8 @@ Install Vundle:
 
 ```
     mkdir ~/.vim
+    mkdir ~/.vim/backup
+    mkdir ~/.vim/swap
     git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 ````
 
