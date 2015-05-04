@@ -19,9 +19,12 @@ cask "electric-sheep"
 cask "skype"
 cask "utorrent"
 cask "vlc"
-cask "hub"
+cask "macdown"
+cask "genymotion"
+cask "android-studio"
 
-brew "hub"
-brew "the_silver_searcher"
-brew "terminal-notifier"
-brew "redis"
+brew "the_silver_searcher" # ag is so fast
+brew "terminal-notifier" # required for groupmuse's terminal-notifier-guard
+brew "redis" # required for groupmuse's server
+brew "qt" # required for groupmuse's capybara-webkit
+brew "ant" # required for android development
