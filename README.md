@@ -1,22 +1,31 @@
 ### Setup
 
-1. Clone into `~/dotfiles` (or wherever you'd like).
-2. Link your files and directories:
+1. Clone this repo into `~/.dotfiles` (or wherever you'd like), then `cd` into it.
+2. Install Homebrew:
 
 ```
-    ln -s ~/dotfiles/.vimrc .vimrc
-    ln -s ~/dotfiles/.zshrc .zshrc
+  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
 
-Install Vundle:
+3. Install all apps with Brew:
 
 ```
-    mkdir ~/.vim
-    mkdir ~/.vim/backup
-    mkdir ~/.vim/swap
-    git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-````
+  brew tap homebrew/bundle
+  brew bundle
+```
 
-Install `ag` with `brew install the_silver_searcher`
+4. Install yo dotfiles! (Replace with locations as needed)
 
-Install plugins with `vim`, `:PluginInstall`.
+```
+  cd ~
+  ln -s ~/.dotfiles/.zshrc
+  ln -s ~/.dotfiles/.vimrc
+
+  mkdir ~/.vim
+  mkdir ~/.vim/backup
+  mkdir ~/.vim/swap
+
+  git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+
+  vim +PluginInstall +qall
+```
