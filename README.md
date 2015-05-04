@@ -6,6 +6,13 @@
 ```
     ln -s ~/dotfiles/vim/.vimrc .vimrc
     ln -s ~/dotfiles/zsh/.zshrc .zshrc
-    ln -s ~/dotfiles/vim .vim
 ```
 
+Install Vundle:
+
+```
+    mkdir ~/.vim
+    git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+````
+
+Install plugins with `vim`, `:PluginInstall`.
