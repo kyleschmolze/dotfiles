@@ -23,14 +23,9 @@
 ```
 
 
-3. Brew, Boxen, and more.
+3. Brew bundle!
 
-**Option 1**:
-If you are using Boxen, go ahead and run that, which will install Homebrew, rbenv, Ruby versions, etc.
-Follow the instructions [here](https://github.com/boxen/our-boxen#bootstrapping) (if your disk isn't
-encrypted, use this install command: `./script/boxen --no-fde`).
-
-**Option 2**: Install Homebrew on your own:
+Install Homebrew:
 
 ```
   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -44,3 +39,30 @@ encrypted, use this install command: `./script/boxen --no-fde`).
 ```
 
 5. Install [Groupmuse](https://github.com/kyletns/groupmuse/wiki/Setup)!
+
+
+#### Additional notes
+
+Postgres.app
+
+Once setup, ensure that the version/directory in ~/.zshrc correctly appends
+the postgres tools to your PATH. That provides db_create and many other tools.
+
+Heroku setup
+
+```
+  heroku keys:add
+  heroku git:remote -a groupmuse
+```
+
+Quick db copy
+
+```
+  heroku pg:backups capture  -a groupmuse
+  curl -o production.dump `heroku pg:backups public-url -a groupmuse`
+  dropdb groupmuse_development
+  createdb groupmuse_development
+  pg_restore --verbose --clean --no-acl --no-owner -h localhost -d groupmuse_development production.dump
+  rake scrub_database
+  rm -P production.dump
+```

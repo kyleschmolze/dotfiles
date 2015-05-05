@@ -71,7 +71,7 @@ set backspace=2 " otherwise, you can only Backspace-delete things you just typed
 set undodir=~/.vim/undo
 set undofile
 
-set clipboard=unnamed " Use mac clipboard
+set clipboard=unnamed " Use mac clipboard (requires vim 7.4)
 
 " Put all swap and backup files in one place
 set backupdir=~/.vim/backup

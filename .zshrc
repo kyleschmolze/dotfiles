@@ -110,4 +110,4 @@ alias gpom='git push origin master'
 alias gphm='git push heroku master'
 alias gphmrdbm='git push heroku master; heroku run rake db:migrate -a groupmuse'
 
-alias clearDS='sudo find / -name ".DS_Store" -depth -exec rm {} \'
+alias clearDS='sudo find / -name ".DS_Store" -depth -exec rm {} \;'
