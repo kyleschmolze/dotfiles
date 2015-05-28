@@ -51,6 +51,12 @@ plugins=(git)
 
 export PATH=$PATH:"/Users/kyle/.rvm/gems/ruby-2.0.0-p643/bin:/Users/kyle/.rvm/gems/ruby-2.0.0-p643@global/bin:/Users/kyle/.rvm/rubies/ruby-2.0.0-p643/bin:/Users/kyle/.rvm/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 export PATH=$PATH:/Applications/Postgres.app/Contents/Versions/9.4/bin
+export PATH=$PATH:/Users/kyle/Library/Android/sdk/tools
+export PATH=$PATH:/Users/kyle/Library/Android/sdk/platform-tools
+
+export NVM_DIR="/Users/kyle/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -77,6 +83,13 @@ source $ZSH/oh-my-zsh.sh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
 #
+
+# FASD hook
+eval "$(fasd --init auto)"
+
+# Hub hook
+eval "$(hub alias -s)"
+
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
@@ -104,6 +117,8 @@ alias rdbsl='rake db:schema:load'
 alias rdbtp='rake db:test:prepare'
 alias rdbtl='rake db:test:load'
 alias rr='rake routes'
+alias rj='rake jobs:work'
+alias rjc='rake jobs:clear'
 
 alias so='source ~/.zshrc'
 alias gpom='git push origin master'
@@ -111,3 +126,16 @@ alias gphm='git push heroku master'
 alias gphmrdbm='git push heroku master; heroku run rake db:migrate -a groupmuse'
 
 alias clearDS='sudo find / -name ".DS_Store" -depth -exec rm {} \;'
+
+# Brewfile!
+alias bb='cd ~/.dotfiles && brew bundle'
+
+# Terminal-notifier
+alias notify='terminal-notifier -message '
+
+# Macvim
+alias m='mvim'
+
+# Don't correct me!
+DISABLE_CORRECTION="true"
+

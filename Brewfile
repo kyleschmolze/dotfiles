@@ -1,5 +1,5 @@
 # Install with:
-# brew tap homebrew/bundle
+# brew tap homebrew/eundle
 # brew bundle
 
 # Setup
@@ -9,10 +9,10 @@ brew "caskroom/cask/brew-cask"
 # Apps
 cask "firefox"
 cask "google-chrome"
+cask "google-drive"
 cask "evernote"
 cask "rowanj-gitx"
 cask "dropbox"
-cask "google-drive"
 cask "postgres"
 cask "slack"
 cask "keka"
@@ -25,6 +25,8 @@ cask "vlc"
 cask "macdown"
 cask "genymotion"
 cask "heroku-toolbelt"
+cask "hub"
+cask "iterm2"
 
 # Some dev stuff
 brew "vim" # get 7.4
@@ -33,6 +35,7 @@ brew "terminal-notifier" # required for groupmuse's terminal-notifier-guard
 brew "redis" # required for groupmuse's server
 brew "qt" # required for groupmuse's capybara-webkit
 brew "ant" # required for android development
+brew "fasd"
 
 # This one takes a long time...
 cask "android-studio"

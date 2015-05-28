@@ -18,6 +18,7 @@ Plugin 'altercation/vim-colors-solarized'
 Plugin 'tpope/vim-haml'
 Plugin 'vim-scripts/vim-coffee-script'
 Plugin 'digitaltoad/vim-jade'
+Plugin 'skwp/greplace.vim'
 "Plugin 'sjl/gundo.vim'
 
 " All of your Plugins must be added before the following line
@@ -31,10 +32,11 @@ filetype plugin indent on    " required
 
 
 " Color settings. Very picky!
+syntax enable
 set background=dark
-colorscheme solarized
 let g:solarized_termcolors=256 
-syntax on
+colorscheme solarized
+" if using iTerm2, comment out this line:
 
 " :BGD and :BGL to quickly switch color schemes
 command BGD set background=dark | colo solarized
@@ -43,6 +45,7 @@ command BGL set background=light | colo solarized
 " Use ag for CtrlP
 let mapleader=","
 let g:ctrlp_user_command = 'ag %s -l -i --nocolor --hidden -g ""'
+let g:ctrlp_use_caching = 0
 map <leader>f :CtrlP<CR>
 map <leader>b :CtrlPMRU<CR>
 
@@ -95,9 +98,10 @@ nmap <C-j> o<Esc>
 nmap <C-k> O<Esc>
 nmap <Space> i_<Esc>r
 
-" Quickly edit .vimrc
+" Quickly edit dotfiles
 nmap <silent> <leader>ev :e ~/.vimrc<CR>
 nmap <silent> <leader>ez :e ~/.zshrc<CR>
+nmap <silent> <leader>eb :e ~/.dotfiles/Brewfile<CR>
 
 " Quick save
 map <leader>s :w<CR>

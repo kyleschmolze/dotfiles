@@ -63,6 +63,12 @@ Quick db copy
   dropdb groupmuse_development
   createdb groupmuse_development
   pg_restore --verbose --clean --no-acl --no-owner -h localhost -d groupmuse_development production.dump
+  rdbm
+```
+
+Optional, safety first:
+
+```
   rake scrub_database
   rm -P production.dump
 ```
