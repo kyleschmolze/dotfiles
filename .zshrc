@@ -51,8 +51,11 @@ plugins=(git)
 
 export PATH=$PATH:"/Users/kyle/.rvm/gems/ruby-2.0.0-p643/bin:/Users/kyle/.rvm/gems/ruby-2.0.0-p643@global/bin:/Users/kyle/.rvm/rubies/ruby-2.0.0-p643/bin:/Users/kyle/.rvm/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 export PATH=$PATH:/Applications/Postgres.app/Contents/Versions/9.4/bin
-export PATH=$PATH:/Users/kyle/Library/Android/sdk/tools
-export PATH=$PATH:/Users/kyle/Library/Android/sdk/platform-tools
+
+# android stuff!
+export PATH=$PATH:/Users/kyle/Library/Android/sdk/tools # ant
+export PATH=$PATH:/Users/kyle/Library/Android/sdk/platform-tools # adb
+export PATH=$PATH:/Users/kyle/Library/Android/sdk/build-tools/22.0.1 # zipalign
 
 export NVM_DIR="/Users/kyle/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -101,6 +104,7 @@ alias -g JOC=jumpoffcampus
 alias rgrep=grep -rin
 alias rsrs='redis-server &; rails server'
 alias rs='rails server'
+alias rs4='rails server -p 4000'
 alias rc='rails console'
 alias -g rg='rails generate'
 
@@ -109,6 +113,7 @@ alias hl='heroku logs -t'
 
 # Git!
 alias gs='git status'
+alias gaa='git add . -A'
 alias gc='git commit -am'
 alias rdbm='rake db:migrate'
 alias rdbrb='rake db:rollback'
