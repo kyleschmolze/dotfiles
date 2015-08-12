@@ -43,11 +43,12 @@ command BGD set background=dark | colo solarized
 command BGL set background=light | colo solarized
 
 " Use ag for CtrlP
-let mapleader=","
+let mapleader = "\<Space>"
 let g:ctrlp_user_command = 'ag %s -l -i --nocolor --hidden -g ""'
 let g:ctrlp_use_caching = 0
 map <leader>f :CtrlP<CR>
 map <leader>b :CtrlPMRU<CR>
+map <leader>q :wq<CR>
 
 
 
@@ -104,7 +105,7 @@ nmap <silent> <leader>ez :e ~/.zshrc<CR>
 nmap <silent> <leader>eb :e ~/.dotfiles/Brewfile<CR>
 
 " Quick save
-map <leader>s :w<CR>
+map <leader>w :w<CR>
 
 " Simple key remaps
 imap jk <Esc>

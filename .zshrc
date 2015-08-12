@@ -68,12 +68,8 @@ source $ZSH/oh-my-zsh.sh
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+export VISUAL=vim
+export EDITOR="$VISUAL"
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -99,11 +95,11 @@ eval "$(hub alias -s)"
 alias -g GM=groupmuse
 alias -g GMS=groupmuse-staging
 alias -g GMP=groupmusepages
+alias -g GMR=groupmuse-rails
 alias -g JOC=jumpoffcampus
 
 alias rgrep=grep -rin
-alias rsrs='redis-server &; rails server'
-alias rs='rails server'
+alias rs='redis-server &; rails server'
 alias rs4='rails server -p 4000'
 alias rc='rails console'
 alias -g rg='rails generate'
@@ -128,7 +124,8 @@ alias rjc='rake jobs:clear'
 alias so='source ~/.zshrc'
 alias gpom='git push origin master'
 alias gphm='git push heroku master'
-alias gphmrdbm='git push heroku master; heroku run rake db:migrate -a groupmuse'
+alias gphmrdbm='git push heroku master; heroku run rake db:migrate -a groupmuse; heroku restart'
+alias hrrdbm='heroku run rake db:migrate'
 
 alias clearDS='sudo find / -name ".DS_Store" -depth -exec rm {} \;'
 
