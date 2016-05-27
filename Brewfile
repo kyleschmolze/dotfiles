@@ -8,7 +8,7 @@ brew "caskroom/cask/brew-cask"
 
 # Apps
 cask "firefox"
-cask "google-chrome"
+# cask "google-chrome" # 1 password extension doesn't work unless chrome is in ~/Applications
 cask "google-drive"
 cask "evernote"
 cask "rowanj-gitx"
@@ -27,6 +27,9 @@ cask "genymotion"
 cask "heroku-toolbelt"
 cask "hub"
 cask "iterm2"
+cask "kindle"
+cask "steam"
+cask "textexpander"
 
 # Some dev stuff
 brew "vim" # get 7.4
@@ -35,7 +38,7 @@ brew "terminal-notifier" # required for groupmuse's terminal-notifier-guard
 brew "redis" # required for groupmuse's server
 brew "qt" # required for groupmuse's capybara-webkit
 brew "ant" # required for android development
-brew "fasd"
+brew "fasd" # dope ninja terminal
 
 # This one takes a long time...
 cask "android-studio"

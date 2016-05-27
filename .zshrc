@@ -1,6 +1,9 @@
 # Path to your oh-my-zsh installation.
 export ZSH=/Users/kyle/.oh-my-zsh
 
+# Hub hook
+eval "$(hub alias -s)"
+
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
@@ -45,12 +48,13 @@ ENABLE_CORRECTION="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(rails git)
 
 # User configuration
 
 export PATH=$PATH:"/Users/kyle/.rvm/gems/ruby-2.0.0-p643/bin:/Users/kyle/.rvm/gems/ruby-2.0.0-p643@global/bin:/Users/kyle/.rvm/rubies/ruby-2.0.0-p643/bin:/Users/kyle/.rvm/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 export PATH=$PATH:/Applications/Postgres.app/Contents/Versions/9.4/bin
+export PATH=$PATH:/usr/local/heroku/bin
 
 # android stuff!
 export PATH=$PATH:/Users/kyle/Library/Android/sdk/tools # ant
@@ -86,17 +90,16 @@ export EDITOR="$VISUAL"
 # FASD hook
 eval "$(fasd --init auto)"
 
-# Hub hook
-eval "$(hub alias -s)"
-
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias -g GM=groupmuse
+alias -g GME=groupmuse-edge
 alias -g GMS=groupmuse-staging
 alias -g GMP=groupmusepages
 alias -g GMR=groupmuse-rails
 alias -g JOC=jumpoffcampus
+alias -g JOCS=jumpoffcampus-staging
 
 alias rgrep=grep -rin
 alias rs='redis-server &; rails server'
@@ -104,28 +107,22 @@ alias rs4='rails server -p 4000'
 alias rc='rails console'
 alias -g rg='rails generate'
 
-alias hrc='heroku run console'
+alias hrc='heroku run rails console'
 alias hl='heroku logs -t'
+alias hr='heroku restart'
 
 # Git!
 alias gs='git status'
 alias gaa='git add . -A'
 alias gc='git commit -am'
-alias rdbm='rake db:migrate'
-alias rdbrb='rake db:rollback'
-alias rdbms='rake db:migrate:status'
-alias rdbsl='rake db:schema:load'
-alias rdbtp='rake db:test:prepare'
-alias rdbtl='rake db:test:load'
-alias rr='rake routes'
 alias rj='rake jobs:work'
 alias rjc='rake jobs:clear'
 
 alias so='source ~/.zshrc'
 alias gpom='git push origin master'
 alias gphm='git push heroku master'
-alias gphmrdbm='git push heroku master; heroku run rake db:migrate -a groupmuse; heroku restart'
-alias hrrdbm='heroku run rake db:migrate'
+alias deploy='git push heroku master; heroku run rake db:migrate; heroku restart'
+alias hrdm='heroku run rake db:migrate'
 
 alias clearDS='sudo find / -name ".DS_Store" -depth -exec rm {} \;'
 
@@ -137,6 +134,7 @@ alias notify='terminal-notifier -message '
 
 # Macvim
 alias m='mvim'
+alias how2r='how2 -l ruby'
 
 # Don't correct me!
 DISABLE_CORRECTION="true"

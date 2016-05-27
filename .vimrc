@@ -21,6 +21,8 @@ Plugin 'digitaltoad/vim-jade'
 Plugin 'skwp/greplace.vim'
 "Plugin 'sjl/gundo.vim'
 
+Plugin 'tpope/vim-surround'
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -48,7 +50,6 @@ let g:ctrlp_user_command = 'ag %s -l -i --nocolor --hidden -g ""'
 let g:ctrlp_use_caching = 0
 map <leader>f :CtrlP<CR>
 map <leader>b :CtrlPMRU<CR>
-map <leader>q :wq<CR>
 
 
 
@@ -94,22 +95,33 @@ au BufNewFile,BufRead *.eco set filetype=html
 au BufNewFile,BufRead *.rabl set filetype=ruby
 au BufNewFile,BufRead *.less set filetype=scss
 
-" Enter => new line
-nmap <C-j> o<Esc> 
-nmap <C-k> O<Esc>
-nmap <Space> i_<Esc>r
-
 " Quickly edit dotfiles
 nmap <silent> <leader>ev :e ~/.vimrc<CR>
 nmap <silent> <leader>ez :e ~/.zshrc<CR>
 nmap <silent> <leader>eb :e ~/.dotfiles/Brewfile<CR>
 
+nmap <C-k> O<Esc>
+nmap <Space> i_<Esc>r
+
 " Quick save
 map <leader>w :w<CR>
+" Quick quit
+map <leader>q :wq<CR>
 
 " Simple key remaps
 imap jk <Esc>
-nmap ; :
+
+" nmap ; :
+" Ctrl-j and k create new lines below and above cursor
+nmap <C-k> O<Esc>j
+nmap <C-j> o<Esc>k
+
+" space+< does a crazy indent-redent
+nmap <leader>< <<j>>khh
+
+nmap <C-;> ;
+nmap <C-leader> <<<Esc>j<Esc>>>
+
 
 " Space => Insert one char
 nmap <Space> i_<Esc>r
