@@ -94,12 +94,12 @@ eval "$(fasd --init auto)"
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias -g GM=groupmuse
-alias -g GME=groupmuse-edge
-alias -g GMS=groupmuse-staging
+alias -g GME='groupmuse-edge'
+alias -g GMS='groupmuse-staging'
 alias -g GMP=groupmusepages
-alias -g GMR=groupmuse-rails
+alias -g GMR='groupmuse-rails'
 alias -g JOC=jumpoffcampus
-alias -g JOCS=jumpoffcampus-staging
+alias -g JOCS='jumpoffcampus-staging'
 
 alias rgrep=grep -rin
 alias rs='redis-server &; rails server'

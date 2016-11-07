@@ -1,10 +1,11 @@
 # Install with:
 # brew tap homebrew/eundle
 # brew bundle
+# Make sure all shortcuts end up in /Applications, not 
 
 # Setup
 tap  "caskroom/cask"
-brew "caskroom/cask/brew-cask"
+#brew "caskroom/cask/brew-cask"
 
 # Apps
 cask "firefox"
@@ -13,20 +14,19 @@ cask "google-drive"
 cask "evernote"
 cask "rowanj-gitx"
 cask "dropbox"
-cask "postgres"
+#cask "postgres" installed natively
 cask "slack"
 cask "keka"
 cask "karabiner"
 cask "1password"
 cask "electric-sheep"
 cask "skype"
-cask "utorrent"
+#cask "utorrent" installed natively
 cask "vlc"
 cask "macdown"
 cask "genymotion"
 cask "heroku-toolbelt"
 cask "hub"
-cask "iterm2"
 cask "kindle"
 cask "steam"
 cask "textexpander"
