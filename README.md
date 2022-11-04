@@ -43,6 +43,10 @@ Install Homebrew:
 
 #### Additional notes
 
+Vim
+
+On my most recent upgrade (Catalina), Macvim broke, which I fixed by uninstalling vim + macvim via Homebrew, and leaving only the system vim in /usr/bin/vim. Then instead of using Homebrew, I just downloaded Macvim.app directly from their website, and added the `bin` folder within it's Package Contents to my PATH in `~/.zshrc`. Homebrew insisted on building it's own vim / it's own ruby, and kept pointing to the wrong folder and crashing upon open.
+
 Postgres.app
 
 Once setup, ensure that the version/directory in ~/.zshrc correctly appends
