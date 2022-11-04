@@ -15,7 +15,7 @@ cask "evernote"
 cask "rowanj-gitx"
 cask "dropbox"
 #cask "postgres" installed natively
-cask "slack"
+#cask "slack"
 cask "keka"
 cask "karabiner"
 cask "1password"

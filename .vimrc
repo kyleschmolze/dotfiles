@@ -22,11 +22,17 @@ Plugin 'skwp/greplace.vim'
 "Plugin 'sjl/gundo.vim'
 
 Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-fugitive'
+
+Plugin 'pangloss/vim-javascript'
+Plugin 'maxmellon/vim-jsx-pretty'
+Plugin 'mxw/vim-jsx'
+Plugin 'isRuslan/vim-es6'
+Plugin 'github/copilot.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
-
 
 """"""""""
 " SETTINGS
@@ -50,6 +56,8 @@ let g:ctrlp_user_command = 'ag %s -l -i --nocolor --hidden -g ""'
 let g:ctrlp_use_caching = 0
 map <leader>f :CtrlP<CR>
 map <leader>b :CtrlPMRU<CR>
+map <leader>g :Gsearch 
+map <leader>a :Ag 
 
 
 
@@ -68,8 +76,17 @@ set incsearch " search as you type
 set showmatch " Show matching brackets/parenthesis
 set ignorecase " Case insensitive search
 set smartcase " Case sensitive when uc present
+set nohlsearch " Disable highlighting of search results
 
 set backspace=2 " otherwise, you can only Backspace-delete things you just typed
+
+" filetree viewer
+let g:netrw_liststyle = 3
+"let g:netrw_show_hidden = 1
+let g:netrw_banner = 0
+let g:netrw_winsize = 25
+let g:netrw_browse_split = 4
+let g:netrw_altv = 1
 
 
 " Persistent undo
@@ -82,10 +99,13 @@ set clipboard=unnamed " Use mac clipboard (requires vim 7.4)
 set backupdir=~/.vim/backup
 set directory=~/.vim/swap
 
-
 " Folding
 set foldlevel=999
 set foldmethod=indent
+
+" github copilot
+imap ‘ :copilot-next<CR>
+imap “ :copilot-previous<CR>
 
 " Disable auto-commenting
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
@@ -100,7 +120,10 @@ nmap <silent> <leader>ev :e ~/.vimrc<CR>
 nmap <silent> <leader>ez :e ~/.zshrc<CR>
 nmap <silent> <leader>eb :e ~/.dotfiles/Brewfile<CR>
 
-nmap <C-k> O<Esc>
+" Create new lines below and above cursor
+nmap <BS> O<Esc>j
+nmap <CR> o<Esc>k
+
 nmap <Space> i_<Esc>r
 
 " Quick save
@@ -111,17 +134,16 @@ map <leader>q :wq<CR>
 " Simple key remaps
 imap jk <Esc>
 
-" nmap ; :
-" Ctrl-j and k create new lines below and above cursor
-nmap <C-k> O<Esc>j
-nmap <C-j> o<Esc>k
-
 " space+< does a crazy indent-redent
 nmap <leader>< <<j>>khh
 
 nmap <C-;> ;
-nmap <C-leader> <<<Esc>j<Esc>>>
 
+" resize current buffer by +/- 5 
+nmap ˙ :vertical resize -5<cr>
+nmap ¬ :vertical resize +5<cr>
+nmap ∆ :resize +5<cr>
+nmap ˚ :resize -5<cr>
 
 " Space => Insert one char
 nmap <Space> i_<Esc>r
@@ -173,4 +195,3 @@ augroup END
 command! -nargs=1 -complete=file -bar MoveFile call MoveFile('<args>')
 command! -nargs=1 AddExt execute "saveas ".expand("%:p").<q-args>
 command! -nargs=1 ChgExt execute "saveas ".expand("%:p:r").<q-args>
-
