@@ -1,9 +1,6 @@
 # Path to your oh-my-zsh installation.
 export ZSH=/Users/kyle/.oh-my-zsh
 
-# Hub hook
-eval "$(hub alias -s)"
-
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
@@ -23,10 +20,10 @@ ZSH_THEME="robbyrussell"
 # DISABLE_LS_COLORS="true"
 
 # Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
+DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
-ENABLE_CORRECTION="true"
+# ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
 # COMPLETION_WAITING_DOTS="true"
@@ -51,19 +48,26 @@ ENABLE_CORRECTION="true"
 plugins=(rails git)
 
 # User configuration
-
-export PATH=$PATH:"/Users/kyle/.rvm/gems/ruby-2.0.0-p643/bin:/Users/kyle/.rvm/gems/ruby-2.0.0-p643@global/bin:/Users/kyle/.rvm/rubies/ruby-2.0.0-p643/bin:/Users/kyle/.rvm/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
-export PATH=$PATH:/Applications/Postgres.app/Contents/Versions/9.4/bin
+export PATH=$PATH:"/Users/kyle/scripts::/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+export PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin
 export PATH=$PATH:/usr/local/heroku/bin
 
 # android stuff!
-export PATH=$PATH:/Users/kyle/Library/Android/sdk/tools # ant
-export PATH=$PATH:/Users/kyle/Library/Android/sdk/platform-tools # adb
-export PATH=$PATH:/Users/kyle/Library/Android/sdk/build-tools/22.0.1 # zipalign
+export ANDROID_HOME=$HOME/Library/Android/sdk
+export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH=$PATH:$ANDROID_HOME/tools
+export PATH=$PATH:$ANDROID_HOME/tools/bin
+export PATH=$PATH:$ANDROID_HOME/platform-tools
+
+
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_201.jdk/Contents/Home
+export PATH=$JAVA_HOME/bin:$PATH
 
 export NVM_DIR="/Users/kyle/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
+# fastlane
+export PATH="$HOME/.fastlane/bin:$PATH"
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -99,10 +103,20 @@ alias -g GMS='groupmuse-staging'
 alias -g GMP=groupmusepages
 alias -g GMR='groupmuse-rails'
 alias -g JOC=jumpoffcampus
+alias -g J5=jumpoffcampus-5
+alias -g J5S=jumpoffcampus-5-staging
+alias -g SBAS='sunrisebayarea-spoke'
 alias -g JOCS='jumpoffcampus-staging'
+alias -g J5='jumpoffcampus-5'
+alias -g J5S='jumpoffcampus-5-staging'
+alias -g EBD=eastbaydsa
+alias -g EBDS=eastbaydsa-staging
+
+alias rndb='open "rndebugger://set-debugger-loc?host=localhost&port=8081"'
 
 alias rgrep=grep -rin
-alias rs='redis-server &; rails server'
+alias rs='find_and_kill_ruby_server; redis-server &; rails server'
+alias groupmuse-s='find_and_kill_ruby_server; concurrently "rails s" "redis-server" "stripe listen --latest --events payment_intent.created,payment_intent.succeeded,payment_intent.payment_failed,invoice.paid,invoice.created --forward-to localhost:3000/stripe/events/webhook --forward-connect-to localhost:3000/stripe/events/webhook"'
 alias rs4='rails server -p 4000'
 alias rc='rails console'
 alias -g rg='rails generate'
@@ -115,12 +129,14 @@ alias hr='heroku restart'
 alias gs='git status'
 alias gaa='git add . -A'
 alias gc='git commit -am'
-alias rj='rake jobs:work'
-alias rjc='rake jobs:clear'
+alias rj='bin/rails jobs:work'
+alias rjc='bin/rails jobs:clear'
+alias git-delete-merged='git branch --merged master | grep -v "\* master" | xargs -n 1 git branch -d'
 
 alias so='source ~/.zshrc'
 alias gpom='git push origin master'
 alias gphm='git push heroku master'
+alias gpdm='git push dokku main:master'
 alias deploy='git push heroku master; heroku run rake db:migrate; heroku restart'
 alias hrdm='heroku run rake db:migrate'
 
@@ -133,9 +149,18 @@ alias bb='cd ~/.dotfiles && brew bundle'
 alias notify='terminal-notifier -message '
 
 # Macvim
+export PATH=$PATH:/Applications/MacVim.app/Contents/bin
 alias m='mvim'
+alias n='nvim'
 alias how2r='how2 -l ruby'
+
+alias git-clear='git branch --merged | egrep -v "(^\*|master|main|dev)" | xargs git branch -d'
+
+# disable autocorrect for necessary commands
+#alias rspec='nocorrect rspec'
 
 # Don't correct me!
 DISABLE_CORRECTION="true"
+ENABLE_CORRECTION="false"
 
+eval "$(rbenv init -)"
