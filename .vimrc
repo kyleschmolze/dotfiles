@@ -12,10 +12,11 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
 " Add plugins here. Github, vim-scripts.org, git, and local files are all supported.
-Plugin 'kien/ctrlp.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'rking/ag.vim'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'tpope/vim-haml'
+Plugin 'tpope/vim-rails'
 Plugin 'vim-scripts/vim-coffee-script'
 Plugin 'digitaltoad/vim-jade'
 Plugin 'skwp/greplace.vim'
@@ -29,6 +30,9 @@ Plugin 'maxmellon/vim-jsx-pretty'
 Plugin 'mxw/vim-jsx'
 Plugin 'isRuslan/vim-es6'
 Plugin 'github/copilot.vim'
+Plugin 'tomtom/tcomment_vim'
+Plugin 'thoughtbot/vim-rspec'
+Plugin 'tpope/vim-endwise'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -44,15 +48,15 @@ syntax enable
 set background=dark
 let g:solarized_termcolors=256 
 colorscheme solarized
-" if using iTerm2, comment out this line:
 
 " :BGD and :BGL to quickly switch color schemes
 command BGD set background=dark | colo solarized
 command BGL set background=light | colo solarized
 
-" Use ag for CtrlP
 let mapleader = "\<Space>"
-let g:ctrlp_user_command = 'ag %s -l -i --nocolor --hidden -g ""'
+
+" Use ag for CtrlP
+let g:ctrlp_user_command = 'ag %s -l -i --hidden -g ""'
 let g:ctrlp_use_caching = 0
 map <leader>f :CtrlP<CR>
 map <leader>b :CtrlPMRU<CR>
@@ -129,7 +133,7 @@ nmap <Space> i_<Esc>r
 " Quick save
 map <leader>w :w<CR>
 " Quick quit
-map <leader>q :wq<CR>
+map <leader>q :q<CR>
 
 " Simple key remaps
 imap jk <Esc>
@@ -152,6 +156,7 @@ nmap <Space> i_<Esc>r
 nmap Y Du
 
 " Common typos
+cmap E e
 cmap Wq wq
 cmap WQ wq
 cmap Q q
@@ -195,3 +200,11 @@ augroup END
 command! -nargs=1 -complete=file -bar MoveFile call MoveFile('<args>')
 command! -nargs=1 AddExt execute "saveas ".expand("%:p").<q-args>
 command! -nargs=1 ChgExt execute "saveas ".expand("%:p:r").<q-args>
+
+" vim rspec shortcuts
+map <Leader>t :call RunCurrentSpecFile()<CR>
+map <Leader>s :call RunNearestSpec()<CR>
+map <Leader>l :call RunLastSpec()<CR>
+map <Leader>r :call RunAllSpecs()<CR>
+" Requires term (brew install term)
+let g:rspec_command = "split | terminal bundle exec rspec {spec}"

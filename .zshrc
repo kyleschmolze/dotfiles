@@ -154,6 +154,8 @@ alias m='mvim'
 alias n='nvim'
 alias how2r='how2 -l ruby'
 
+alias b='bundle exec'
+
 alias git-clear='git branch --merged | egrep -v "(^\*|master|main|dev)" | xargs git branch -d'
 
 # disable autocorrect for necessary commands
@@ -164,3 +166,6 @@ DISABLE_CORRECTION="true"
 ENABLE_CORRECTION="false"
 
 eval "$(rbenv init -)"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+ulimit -n 65536 # increase the number of open files (required for chromedriver not to crash on my groupmuse tests)
