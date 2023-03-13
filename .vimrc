@@ -2,6 +2,7 @@
 " VUNDLE PACKAGES
 """""""""""""""""
 
+set nocompatible              " be iMproved, required
 filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
@@ -9,7 +10,9 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 " let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
+Plugin 'VundleVim/Vundle.vim'
+
+Plugin 'preservim/nerdtree'
 
 " Add plugins here. Github, vim-scripts.org, git, and local files are all supported.
 Plugin 'ctrlpvim/ctrlp.vim'
@@ -17,6 +20,7 @@ Plugin 'rking/ag.vim'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'tpope/vim-haml'
 Plugin 'tpope/vim-rails'
+Plugin 'vim-ruby/vim-ruby'
 Plugin 'vim-scripts/vim-coffee-script'
 Plugin 'digitaltoad/vim-jade'
 Plugin 'skwp/greplace.vim'
@@ -42,6 +46,11 @@ filetype plugin indent on    " required
 " SETTINGS
 """"""""""
 
+" Return to last edit position when opening files (You want this!)
+autocmd BufReadPost *
+     \ if line("'\"") > 0 && line("'\"") <= line("$") |
+     \   exe "normal! g`\"" |
+     \ endif
 
 " Color settings. Very picky!
 syntax enable
@@ -58,11 +67,16 @@ let mapleader = "\<Space>"
 " Use ag for CtrlP
 let g:ctrlp_user_command = 'ag %s -l -i --hidden -g ""'
 let g:ctrlp_use_caching = 0
+
 map <leader>f :CtrlP<CR>
 map <leader>b :CtrlPMRU<CR>
 map <leader>g :Gsearch 
 map <leader>a :Ag 
 
+" NERDTree settings
+nnoremap <leader>n :NERDTreeFind<CR>
+" Close the tab if NERDTree is the only window remaining in it.
+autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
 
 
 " Some settings
@@ -83,15 +97,6 @@ set smartcase " Case sensitive when uc present
 set nohlsearch " Disable highlighting of search results
 
 set backspace=2 " otherwise, you can only Backspace-delete things you just typed
-
-" filetree viewer
-let g:netrw_liststyle = 3
-"let g:netrw_show_hidden = 1
-let g:netrw_banner = 0
-let g:netrw_winsize = 25
-let g:netrw_browse_split = 4
-let g:netrw_altv = 1
-
 
 " Persistent undo
 set undodir=~/.vim/undo
@@ -118,6 +123,7 @@ autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 au BufNewFile,BufRead *.eco set filetype=html
 au BufNewFile,BufRead *.rabl set filetype=ruby
 au BufNewFile,BufRead *.less set filetype=scss
+au BufNewFile,BufRead *.js set filetype=javascript
 
 " Quickly edit dotfiles
 nmap <silent> <leader>ev :e ~/.vimrc<CR>
@@ -128,7 +134,8 @@ nmap <silent> <leader>eb :e ~/.dotfiles/Brewfile<CR>
 nmap <BS> O<Esc>j
 nmap <CR> o<Esc>k
 
-nmap <Space> i_<Esc>r
+" Space => Insert one char
+nmap <leader>r i_<Esc>r
 
 " Quick save
 map <leader>w :w<CR>
@@ -149,14 +156,13 @@ nmap ¬ :vertical resize +5<cr>
 nmap ∆ :resize +5<cr>
 nmap ˚ :resize -5<cr>
 
-" Space => Insert one char
-nmap <Space> i_<Esc>r
+" Space + r => Insert one char
+nmap <Space>r i_<Esc>r
 
 " Y => cut rest of line
 nmap Y Du
 
 " Common typos
-cmap E e
 cmap Wq wq
 cmap WQ wq
 cmap Q q
@@ -202,9 +208,9 @@ command! -nargs=1 AddExt execute "saveas ".expand("%:p").<q-args>
 command! -nargs=1 ChgExt execute "saveas ".expand("%:p:r").<q-args>
 
 " vim rspec shortcuts
-map <Leader>t :call RunCurrentSpecFile()<CR>
-map <Leader>s :call RunNearestSpec()<CR>
-map <Leader>l :call RunLastSpec()<CR>
-map <Leader>r :call RunAllSpecs()<CR>
+map <leader>tt :call RunCurrentSpecFile()<CR>
+map <leader>ts :call RunNearestSpec()<CR>
+map <leader>tl :call RunLastSpec()<CR>
+map <leader>tr :call RunAllSpecs()<CR>
 " Requires term (brew install term)
 let g:rspec_command = "split | terminal bundle exec rspec {spec}"
