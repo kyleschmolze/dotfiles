@@ -24,6 +24,7 @@ Plugin 'vim-ruby/vim-ruby'
 Plugin 'vim-scripts/vim-coffee-script'
 Plugin 'digitaltoad/vim-jade'
 Plugin 'skwp/greplace.vim'
+Plugin 'zivyangll/git-blame.vim'
 "Plugin 'sjl/gundo.vim'
 
 Plugin 'tpope/vim-surround'
@@ -72,6 +73,9 @@ map <leader>f :CtrlP<CR>
 map <leader>b :CtrlPMRU<CR>
 map <leader>g :Gsearch 
 map <leader>a :Ag 
+
+" run git blame command with leader s
+nnoremap <Leader>s :<C-u>call gitblame#echo()<CR>
 
 " NERDTree settings
 nnoremap <leader>n :NERDTreeFind<CR>
