@@ -1,6 +1,11 @@
 # Path to your oh-my-zsh installation.
 export ZSH=/Users/kyle/.oh-my-zsh
 
+# Secrets (API keys, tokens, hosts) live in an untracked file so this repo can be public
+[ -f ~/.zshrc.local ] && source ~/.zshrc.local
+
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
@@ -48,9 +53,9 @@ DISABLE_AUTO_TITLE="true"
 plugins=(rails git)
 
 # User configuration
-export PATH=$PATH:"/Users/kyle/scripts::/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+export PATH=$PATH:/Users/kyle/scripts::/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 export PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin
-export PATH=$PATH:/usr/local/heroku/bin
+export PATH=$PATH:~/Library/Python/3.9/bin
 
 # android stuff!
 export ANDROID_HOME=$HOME/Library/Android/sdk
@@ -76,7 +81,7 @@ source $ZSH/oh-my-zsh.sh
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 
-export VISUAL=vim
+export VISUAL=nvim
 export EDITOR="$VISUAL"
 
 # Compilation flags
@@ -114,16 +119,12 @@ alias -g EBDS=eastbaydsa-staging
 
 alias rndb='open "rndebugger://set-debugger-loc?host=localhost&port=8081"'
 
+alias gpt=chatgpt
 alias rgrep=grep -rin
-alias rs='find_and_kill_ruby_server; redis-server &; rails server'
+alias rs='find_and_kill_ruby_server; rails server'
 alias groupmuse-s='find_and_kill_ruby_server; concurrently "rails s" "redis-server" "stripe listen --latest --events payment_intent.created,payment_intent.succeeded,payment_intent.payment_failed,invoice.paid,invoice.created --forward-to localhost:3000/stripe/events/webhook --forward-connect-to localhost:3000/stripe/events/webhook"'
 alias rs4='rails server -p 4000'
 alias rc='rails console'
-alias -g rg='rails generate'
-
-alias hrc='heroku run rails console'
-alias hl='heroku logs -t'
-alias hr='heroku restart'
 
 # Git!
 alias gs='git status'
@@ -135,10 +136,8 @@ alias git-delete-merged='git branch --merged master | grep -v "\* master" | xarg
 
 alias so='source ~/.zshrc'
 alias gpom='git push origin master'
-alias gphm='git push heroku master'
-alias gpdm='git push dokku main:master'
-alias deploy='git push heroku master; heroku run rake db:migrate; heroku restart'
-alias hrdm='heroku run rake db:migrate'
+alias gpo='git push origin'
+alias gpdm='git push dokku main:master && echo "==================================" && echo "Deploy complete, restarting app..." && echo "==================================" && ssh root@$DOKKU_HOST dokku ps:restart jumpoffcampus'
 
 alias clearDS='sudo find / -name ".DS_Store" -depth -exec rm {} \;'
 
@@ -169,3 +168,94 @@ eval "$(rbenv init -)"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 ulimit -n 65536 # increase the number of open files (required for chromedriver not to crash on my groupmuse tests)
+
+# opencode
+export PATH=/Users/kyle/.opencode/bin:$PATH
+export PATH="$HOME/.local/bin:$PATH"
+
+# peon-ping quick controls
+alias peon="bash /Users/kyle/.claude/hooks/peon-ping/peon.sh"
+[ -f /Users/kyle/.claude/hooks/peon-ping/completions.bash ] && source /Users/kyle/.claude/hooks/peon-ping/completions.bash
+
+# kyletns-shortener
+shorten() {
+  local base="https://link.kyletns.com"
+  local token="$SHORTENER_TOKEN"
+  local code url
+  if [ $# -eq 1 ]; then
+    url="$1"
+  elif [ $# -eq 2 ]; then
+    code="$1"; url="$2"
+  else
+    echo "usage: shorten [code] <url>" >&2; return 1
+  fi
+  local payload
+  if [ -n "$code" ]; then
+    payload=$(printf '{"code":"%s","url":"%s"}' "$code" "$url")
+  else
+    payload=$(printf '{"url":"%s"}' "$url")
+  fi
+  local resp
+  resp=$(curl -s -X POST "$base/api/create" \
+    -H "Authorization: Bearer $token" \
+    -H "content-type: application/json" \
+    -d "$payload")
+  local got
+  got=$(printf '%s' "$resp" | python3 -c 'import json,sys;d=json.load(sys.stdin);print(d.get("code") or d.get("error",""))')
+  if printf '%s' "$resp" | grep -q '"ok":true'; then
+    local short="$base/$got"
+    printf '%s\n' "$short"
+    printf '%s' "$short" | pbcopy
+  else
+    echo "error: $got" >&2; return 1
+  fi
+}
+
+# auto-switch node version from .nvmrc
+autoload -U add-zsh-hook
+  load-nvmrc() {
+    local nvmrc_path="$(nvm_find_nvmrc)"
+    if [ -n "$nvmrc_path" ]; then
+      local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
+      if [ "$nvmrc_node_version" = "N/A" ]; then
+        nvm install
+      elif [ "$nvmrc_node_version" != "$(nvm version)" ]; then
+        nvm use
+      fi
+    elif [ -n "$(PWD=$OLDPWD nvm_find_nvmrc)" ] && [ "$(nvm version)" != "$(nvm version default)" ]; then
+      nvm use default
+    fi
+  }
+  add-zsh-hook chpwd load-nvmrc
+  load-nvmrc
+
+# bun completions
+[ -s "/Users/kyle/.bun/_bun" ] && source "/Users/kyle/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+# Set up fzf key bindings and fuzzy completion
+source <(fzf --zsh)
+
+# claude code provider switcher — profiles live in ~/.claude/providers/*.json
+cc() {
+  local dir="$HOME/.claude/providers"
+  if [[ "$1" == "ls" ]]; then
+    ls -1 "$dir"/*.json 2>/dev/null | xargs -n1 basename | sed 's/\.json$//'
+    return
+  fi
+  if [[ -n "$1" && -f "$dir/$1.json" ]]; then
+    local profile="$1"; shift
+    claude --settings "$dir/$profile.json" "$@"
+  else
+    claude "$@"
+  fi
+}
+compdef '_files -W ~/.claude/providers -g "*.json(:r)"' cc 2>/dev/null
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/kyle/.lmstudio/bin"
+# End of LM Studio CLI section
+

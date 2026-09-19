@@ -1,78 +1,63 @@
-### Setup
+### Setup (new Mac)
 
-1. Install Xcode, and the Xcode dev tools with `xcode-select --install`
-2. Get vim and zsh to your liking:
+1. Install Xcode dev tools: `xcode-select --install`
+2. Install Homebrew: https://brew.sh
+3. Clone and symlink:
 
 ```
-  git clone https://github.com/kyletns/dotfiles.git ~/.dotfiles
+  git clone git@github.com:kyletns/dotfiles.git ~/.dotfiles
   cd ~
   ln -s ~/.dotfiles/.zshrc
   ln -s ~/.dotfiles/.vimrc
 
-  mkdir ~/.vim
-  mkdir ~/.vim/backup
-  mkdir ~/.vim/swap
-  mkdir ~/.vim/undo
+  mkdir -p ~/.config/nvim
+  ln -s ~/.dotfiles/nvim/init.vim ~/.config/nvim/init.vim
 
-  git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+  mkdir -p ~/.vim/backup ~/.vim/swap ~/.vim/undo
+```
 
-  vim +PluginInstall +qall
+4. zsh + oh-my-zsh:
 
+```
   chsh -s $(which zsh)
-  curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
 
+   The oh-my-zsh installer overwrites `~/.zshrc`; if it replaces your symlink, run
+   `cd ~/.dotfiles && git checkout .zshrc` and re-create the symlink.
 
-3. Brew bundle!
-
-Install Homebrew:
-
-```
-  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-```
-
-4. Install all apps with Brew and Cask:
+5. Vim plugins (managed with [vim-plug](https://github.com/junegunn/vim-plug)):
 
 ```
-  brew tap homebrew/bundle
+  curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  vim +PlugInstall +qall
+```
+
+6. Secrets. API keys and tokens are **not** in this repo (it's public). Create
+   `~/.zshrc.local` (git-ignored, sourced by `.zshrc`) with:
+
+```
+  export OPENAI_API_KEY="..."
+  export ANTHROPIC_API_KEY="..."
+  export GEMINI_API_KEY="..."
+  export DEEPSEEK_API_KEY="..."
+  export SHORTENER_TOKEN="..."   # used by the `shorten` function
+  export DOKKU_HOST="..."        # used by the `gpdm` alias
+```
+
+   then `chmod 600 ~/.zshrc.local`.
+
+7. Brew bundle. NOTE: the Brewfile is old (2018) and needs a refresh before it
+   works on a current Homebrew.
+
+```
   brew bundle
 ```
 
-5. Install [Groupmuse](https://github.com/kyletns/groupmuse/wiki/Setup)!
-
-
 #### Additional notes
-
-Vim
-
-On my most recent upgrade (Catalina), Macvim broke, which I fixed by uninstalling vim + macvim via Homebrew, and leaving only the system vim in /usr/bin/vim. Then instead of using Homebrew, I just downloaded Macvim.app directly from their website, and added the `bin` folder within it's Package Contents to my PATH in `~/.zshrc`. Homebrew insisted on building it's own vim / it's own ruby, and kept pointing to the wrong folder and crashing upon open.
 
 Postgres.app
 
 Once setup, ensure that the version/directory in ~/.zshrc correctly appends
-the postgres tools to your PATH. That provides db_create and many other tools.
-
-Heroku setup
-
-```
-  heroku keys:add
-  heroku git:remote -a groupmuse
-```
-
-Quick db copy
-
-```
-  heroku pg:backups capture  -a groupmuse
-  curl -o production.dump `heroku pg:backups public-url -a groupmuse`
-  dropdb groupmuse_development
-  createdb groupmuse_development
-  pg_restore --verbose --clean --no-acl --no-owner -h localhost -d groupmuse_development production.dump
-  rdbm
-```
-
-Optional, safety first:
-
-```
-  rake scrub_database
-  rm -P production.dump
-```
+the postgres tools to your PATH.

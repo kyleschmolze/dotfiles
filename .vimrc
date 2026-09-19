@@ -1,47 +1,79 @@
 """""""""""""""""
-" VUNDLE PACKAGES
+" VIM-PLUG PACKAGES
 """""""""""""""""
 
-set nocompatible              " be iMproved, required
-filetype off                  " required
+set nocompatible              " disables vi compatibility, allow vim features
 
 " set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+"set rtp+=~/.vim/bundle/Vundle.vim
+call plug#begin()
 
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-
-Plugin 'preservim/nerdtree'
+Plug 'preservim/nerdtree'
 
 " Add plugins here. Github, vim-scripts.org, git, and local files are all supported.
-Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'rking/ag.vim'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'tpope/vim-haml'
-Plugin 'tpope/vim-rails'
-Plugin 'vim-ruby/vim-ruby'
-Plugin 'vim-scripts/vim-coffee-script'
-Plugin 'digitaltoad/vim-jade'
-Plugin 'skwp/greplace.vim'
-Plugin 'zivyangll/git-blame.vim'
-"Plugin 'sjl/gundo.vim'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'rking/ag.vim'
+Plug 'altercation/vim-colors-solarized'
+Plug 'tpope/vim-haml'
+Plug 'tpope/vim-rails'
+Plug 'vim-ruby/vim-ruby'
+Plug 'vim-scripts/vim-coffee-script'
+Plug 'digitaltoad/vim-jade'
+Plug 'skwp/greplace.vim'
+Plug 'zivyangll/git-blame.vim'
+"Plug 'sjl/gundo.vim'
 
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-fugitive'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-fugitive'
 
-Plugin 'pangloss/vim-javascript'
-Plugin 'maxmellon/vim-jsx-pretty'
-Plugin 'mxw/vim-jsx'
-Plugin 'isRuslan/vim-es6'
-Plugin 'github/copilot.vim'
-Plugin 'tomtom/tcomment_vim'
-Plugin 'thoughtbot/vim-rspec'
-Plugin 'tpope/vim-endwise'
+Plug 'pangloss/vim-javascript'
+Plug 'maxmellon/vim-jsx-pretty'
+Plug 'mxw/vim-jsx'
+Plug 'isRuslan/vim-es6'
+Plug 'github/copilot.vim'
+Plug 'tomtom/tcomment_vim'
+Plug 'thoughtbot/vim-rspec'
+Plug 'tpope/vim-endwise'
+Plug 'joshuavial/aider.nvim'
+
+"Start Plugins for Avante.vim
+" Deps
+Plug 'nvim-lua/plenary.nvim'
+Plug 'MunifTanjim/nui.nvim'
+"Plug 'MeanderingProgrammer/render-markdown.nvim'
+
+" Optional deps
+Plug 'hrsh7th/nvim-cmp'
+Plug 'nvim-tree/nvim-web-devicons' "or Plug 'echasnovski/mini.icons'
+Plug 'HakonHarnes/img-clip.nvim'
+Plug 'zbirenbaum/copilot.lua'
+Plug 'stevearc/dressing.nvim' " for enhanced input UI
+Plug 'folke/snacks.nvim' " for modern input UI
+
+" Yay, pass source=true if you want to build from source
+Plug 'yetone/avante.nvim', { 'branch': 'main', 'do': 'make' }
 
 " All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
+call plug#end()            " required
+
+lua << EOF
+require('avante').setup({
+  -- your config here, for example:
+  provider = "claude",
+  providers = {
+    claude = {
+      endpoint = "https://api.anthropic.com",
+      model = "claude-4-sonnet-20250514",
+      timeout = 30000, -- Timeout in milliseconds
+      extra_request_body = {
+        temperature = 0.75,
+        max_tokens = 20480,
+      },
+    },
+  },
+})
+EOF
+
 
 """"""""""
 " SETTINGS
@@ -56,8 +88,8 @@ autocmd BufReadPost *
 " Color settings. Very picky!
 syntax enable
 set background=dark
-let g:solarized_termcolors=256 
 colorscheme solarized
+set termguicolors
 
 " :BGD and :BGL to quickly switch color schemes
 command BGD set background=dark | colo solarized
@@ -68,6 +100,8 @@ let mapleader = "\<Space>"
 " Use ag for CtrlP
 let g:ctrlp_user_command = 'ag %s -l -i --hidden -g ""'
 let g:ctrlp_use_caching = 0
+
+let g:markdown_fenced_languages = ['ruby', 'bash=sh', 'javascript', 'python', 'html', 'css']
 
 map <leader>f :CtrlP<CR>
 map <leader>b :CtrlPMRU<CR>
@@ -117,8 +151,8 @@ set foldlevel=999
 set foldmethod=indent
 
 " github copilot
-imap ‘ :copilot-next<CR>
-imap “ :copilot-previous<CR>
+" imap ‘ :copilot-next<CR>
+" imap “ :copilot-previous<CR>
 
 " Disable auto-commenting
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
@@ -132,6 +166,7 @@ au BufNewFile,BufRead *.js set filetype=javascript
 " Quickly edit dotfiles
 nmap <silent> <leader>ev :e ~/.vimrc<CR>
 nmap <silent> <leader>ez :e ~/.zshrc<CR>
+nmap <silent> <leader>ee :e ~/Library/Application\ Support/espanso/match/from_textexpander.yml<CR>
 nmap <silent> <leader>eb :e ~/.dotfiles/Brewfile<CR>
 
 " Create new lines below and above cursor
@@ -148,6 +183,18 @@ map <leader>q :q<CR>
 
 " Simple key remaps
 imap jk <Esc>
+imap cp <Esc>:Copilot panel<CR>
+nmap cp :Copilot panel<CR>
+nmap cd :Copilot disable<CR>
+nmap ce :Copilot enable<CR>
+let g:copilot_filetypes = { '*': v:true }
+
+"imap <C-L> <Plug>(copilot-accept-word)
+"imap <C-J> <Plug>(copilot-accept-line)
+"imap <C-]> <Plug>(copilot-next) works but breaks vim (cant get out of Insert)
+"imap <C-[> <Plug>(copilot-previous) works but breaks vim (cant get out of Insert)
+"imap <C-\> <Plug>(copilot-suggest)
+"imap <C-^?> <Plug>(copilot-dismiss)
 
 " space+< does a crazy indent-redent
 nmap <leader>< <<j>>khh
